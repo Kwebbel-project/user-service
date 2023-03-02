@@ -1,0 +1,40 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  kwebbel-core:
+    image: docker.io/library/user-service
+    depends_on:
+      - "user_service_db"
+    container_name: user-service
+    ports:
+      - "8081:80"
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=Monke!;Server=user_service_db;Port=5432;Database=kwebbel_user_service; IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - dev
+
+  user_service_db:
+    image: postgres:latest
+    container_name: user_service_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Monke!
+      - POSTGRES_DB=kwebbel_user_service
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  app_data:

@@ -21,6 +21,15 @@ namespace user_service.Repositories
             _context.Users.Add(user);
         }
 
+        public void DeleteUser(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            _context.Users.Remove(user);
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
             return _context.Users.ToList();

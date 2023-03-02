@@ -8,5 +8,6 @@ namespace user_service.Repositories
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
         void CreateUser(User user);
+        void DeleteUser(User user);
     }
 }

@@ -10,6 +10,7 @@ using user_service.Models;
 using user_service.Dto;
 using user_service.Repositories;
 using AutoMapper;
+using user_service.Services;
 
 namespace user_service.Controllers
 {
@@ -17,46 +18,41 @@ namespace user_service.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserRepository repository, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _repository = repository;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserReadDto>>> GetUsers()
         {
-            Console.Write("get users");
-
-            var userItem = _repository.GetAllUsers();
-            return Ok(_mapper.Map<IEnumerable<UserReadDto>>(userItem));
+            var users = _userService.GetAllUsers();
+            return Ok(_mapper.Map<IEnumerable<UserReadDto>>(users));
         }
 
         [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<UserReadDto>> GetUserById(int id)
         {
-            Console.Write("get user by id");
-            var userItem = _repository.GetUserById(id);
-            if (userItem != null)
+            var user = _userService.GetUserById(id);
+            if (user != null)
             {
-                return Ok(_mapper.Map<UserReadDto>(userItem));
-            } else
+                return Ok(_mapper.Map<UserReadDto>(user));
+            }
+            else
             {
-                return NotFound ();
+                return NotFound();
             }
         }
 
         [HttpPost]
         public ActionResult<UserReadDto> CreateUser(UserCreateDto userCreateDto)
         {
-            var userModel = _mapper.Map<User>(userCreateDto);
-            _repository.CreateUser(userModel);
-            _repository.SaveChanges();
-
-            var userReadDto = _mapper.Map<UserReadDto>(userModel);
+            var newUser = _userService.CreateUser(_mapper.Map<User>(userCreateDto));
+            var userReadDto = _mapper.Map<UserReadDto>(newUser);
             return CreatedAtRoute(nameof(GetUserById), new { Id = userReadDto.Id }, userReadDto);
         }
     }

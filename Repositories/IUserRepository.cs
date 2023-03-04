@@ -6,7 +6,8 @@ namespace user_service.Repositories
     {
         bool SaveChanges();
         IEnumerable<User> GetAllUsers();
-        User GetUserById(int id);
+        User GetUserById(long id);
+        User GetUserByEmail(string email);
         void CreateUser(User user);
         void DeleteUser(User user);
     }

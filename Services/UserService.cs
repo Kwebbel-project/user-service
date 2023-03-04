@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using user_service.Dto;
 using user_service.Models;
 using user_service.Repositories;
+using user_service.Services.Interfaces;
 
 namespace user_service.Services
 {
@@ -13,14 +13,6 @@ namespace user_service.Services
         public UserService(IUserRepository repository, IMapper mapper)
         {
             _repository = repository;
-        }
-
-        public User CreateUser(User user)
-        {
-            _repository.CreateUser(user);
-            _repository.SaveChanges();
-
-            return user;
         }
 
         public void DeleteUser(User user)

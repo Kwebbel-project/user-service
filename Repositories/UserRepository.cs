@@ -35,9 +35,14 @@ namespace user_service.Repositories
             return _context.Users.ToList();
         }
 
-        public User GetUserById(int id)
+        public User GetUserById(long id)
         {
             return _context.Users.FirstOrDefault(user => user.Id == id);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefault(user => user.Email == email);
         }
 
         public bool SaveChanges()

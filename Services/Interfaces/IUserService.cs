@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using user_service.Dto;
 using user_service.Models;
 
-namespace user_service.Services
+namespace user_service.Services.Interfaces
 {
     public interface IUserService
     {
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
-        User CreateUser(User user);
         void DeleteUser(User user);
     }
 }

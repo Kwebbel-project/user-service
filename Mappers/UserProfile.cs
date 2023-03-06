@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using user_service.Dto;
 using user_service.Models;
+using user_service.Models.Dto;
 
 namespace user_service.Profiles
 {

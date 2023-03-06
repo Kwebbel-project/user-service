@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using user_service.Data;
 using user_service.Models;
-using user_service.Dto;
 using user_service.Repositories;
 using AutoMapper;
-using user_service.Services;
+using user_service.Services.Interfaces;
+using user_service.Models.Dto;
 
 namespace user_service.Controllers
 {
@@ -46,14 +46,6 @@ namespace user_service.Controllers
             {
                 return NotFound();
             }
-        }
-
-        [HttpPost]
-        public ActionResult<UserReadDto> CreateUser(UserCreateDto userCreateDto)
-        {
-            var newUser = _userService.CreateUser(_mapper.Map<User>(userCreateDto));
-            var userReadDto = _mapper.Map<UserReadDto>(newUser);
-            return CreatedAtRoute(nameof(GetUserById), new { Id = userReadDto.Id }, userReadDto);
         }
     }
 }

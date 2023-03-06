@@ -1,4 +1,4 @@
-﻿namespace user_service.Dto
+﻿namespace user_service.Models.Dto
 {
     public class UserReadDto
     {

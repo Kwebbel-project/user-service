@@ -6,7 +6,7 @@ namespace user_service.Services.Interfaces
 {
     public interface IAuthService
     {
-        User Register(UserCreateDto userCreateDto);
+        Task<User> Register(UserCreateDto userCreateDto);
         string Login(UserLoginDto userLoginDto);
     }
 }

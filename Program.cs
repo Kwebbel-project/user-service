@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using user_service.Common.Kafka;
 using user_service.Data;
 using user_service.Repositories;
 using user_service.Security;
@@ -9,6 +10,14 @@ using user_service.Services;
 using user_service.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        services.AddHostedService<KafkaConsumerHandler>();
+    })
+    .Build()
+    .RunAsync();
 
 // Add services to the container.
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -25,6 +34,7 @@ builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<JwtValidator,JwtValidator>();
 
+builder.Services.AddSingleton<KafkaProducerHandler, KafkaProducerHandler>();
 
 // JWT
 builder.Services.AddAuthentication().AddJwtBearer(options => {
@@ -40,6 +50,9 @@ builder.Services.AddAuthentication().AddJwtBearer(options => {
 });
 
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

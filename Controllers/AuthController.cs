@@ -25,9 +25,10 @@ namespace user_service.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public ActionResult<User> Register(UserCreateDto userDto)
+        public async Task<ActionResult<User>> Register(UserCreateDto userDto)
         {
-            return Ok(_mapper.Map<UserReadDto>(_authService.Register(userDto)));
+            User user = await _authService.Register(userDto);
+            return Ok(_mapper.Map<UserReadDto>(user));
         }
 
         [AllowAnonymous]

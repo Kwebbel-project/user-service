@@ -45,6 +45,7 @@ namespace user_service.Services
 
         public async Task<User> Register(UserCreateDto userCreateDto)
         {
+            //TODO: Create check if email already exists
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(userCreateDto.Password);
             User user = new User();
 
@@ -55,7 +56,7 @@ namespace user_service.Services
             _repository.CreateUser(user);
             _repository.SaveChanges();
 
-            await _kafkaProducerHandler.sendMessage("USER_REGISTERED", System.Text.Json.JsonSerializer.Serialize(user)); //create enum for topic
+            await _kafkaProducerHandler.sendMessage("USER_REGISTERED", System.Text.Json.JsonSerializer.Serialize(user)); //TODO: create enum for topic
 
             return user;
         }

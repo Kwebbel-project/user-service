@@ -32,12 +32,14 @@ namespace user_service.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("login")]
         public ActionResult<string> Login(UserLoginDto userDto)
         {
             string token = _authService.Login(userDto);
             if (token != null && token.Length >= 1)
             {
+                Response.Cookies.Append("jwtToken", token, new CookieOptions { HttpOnly = true });
+
                 return Ok(token);
             } 
             else
@@ -50,7 +52,7 @@ namespace user_service.Controllers
         [Authorize]
         public ActionResult<string> Test()
         {
-            return Ok();
+            return Ok("authorized");
         }
     }
 }
